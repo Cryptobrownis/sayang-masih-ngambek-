@@ -30,19 +30,18 @@
       z-index: 1;
     }
 
-    /* Kartu Pesan Glassmorphism */
+    /* Kartu Utama Glassmorphism */
     .card {
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 30px 25px;
+      padding: 30px 20px;
       border-radius: 25px;
       box-shadow: 0 15px 35px rgba(255, 75, 110, 0.2);
       max-width: 420px;
       width: 100%;
       position: relative;
       z-index: 10;
-      transition: all 0.5s ease;
     }
 
     .avatar-wrapper {
@@ -72,21 +71,21 @@
 
     h1 {
       font-family: 'Sacramento', cursive;
-      font-size: 2.8rem;
+      font-size: 2.7rem;
       color: #ff758c;
       margin-bottom: 10px;
       text-shadow: 0 0 10px rgba(255, 117, 140, 0.5);
     }
 
     .rayuan-box {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.35);
       border-left: 4px solid #ff4b72;
       padding: 15px;
       border-radius: 12px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       line-height: 1.6;
       margin: 15px 0 25px 0;
-      min-height: 90px;
+      min-height: 85px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -94,23 +93,25 @@
       font-style: italic;
     }
 
-    /* Tombol Interaktif */
+    /* TOMBOL SEJAJAR KANAN-KIRI */
     .btn-group {
       display: flex;
-      justify-content: center;
-      gap: 15px;
-      position: relative;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
       min-height: 50px;
     }
 
     .btn {
-      padding: 12px 24px;
-      font-size: 0.95rem;
+      flex: 1;
+      padding: 12px 8px;
+      font-size: 0.85rem;
       font-weight: 600;
       border: none;
-      border-radius: 25px;
+      border-radius: 20px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: transform 0.2s ease, background 0.3s ease;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
@@ -120,18 +121,18 @@
     }
 
     .btn-maaf:hover {
-      transform: scale(1.08);
+      transform: scale(1.05);
       box-shadow: 0 0 20px #ff4b72;
     }
 
     .btn-ngambek {
       background: rgba(255, 255, 255, 0.2);
       color: #eee;
-      position: absolute;
-      right: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      z-index: 99;
     }
 
-    /* Pop-up Modal */
+    /* Pop-up Overlay */
     .overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -140,7 +141,7 @@
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 100;
+      z-index: 1000;
       padding: 20px;
     }
 
@@ -183,8 +184,8 @@
   <!-- Kartu Utama Bujukan -->
   <div class="card" id="mainCard">
     <div class="avatar-wrapper">
-      <!-- Kamu bisa ganti URL gambar di bawah dengan foto pacarmu -->
-      <img class="avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400" alt="Foto Pacar">
+      <!-- ⬇️ GANTI FOTO KAMU / PACAR DI SINI ⬇️ -->
+      <img class="avatar" src="foto-ann.jpeg" alt="Foto Pacar">
       <span class="heart-badge">🥺</span>
     </div>
     
@@ -194,8 +195,9 @@
       "Aku tahu aku salah... Tapi tau gak? Dunia aku sepi banget kalau kamu lagi cuek dan ngambek kayak gini 🥺"
     </div>
 
-    <div class="btn-group" id="btnArea">
-      <button class="btn btn-maaf" onclick="terimaMaaf()">Udah Enggak Ngambek ❤️</button>
+    <!-- TOMBOL SEJAJAR KANAN-KIRI -->
+    <div class="btn-group">
+      <button class="btn btn-maaf" onclick="terimaMaaf()">Udah Ga Ngambek ❤️</button>
       <button class="btn btn-ngambek" id="btnKabur" onmouseover="kaburTombol()" onclick="kaburTombol()">Masih Kesel! 😤</button>
     </div>
   </div>
@@ -210,7 +212,7 @@
   </div>
 
   <script>
-    // 1. DAFTAR RAYUAN BERGANTI-GANTI SAAT TOMBOL DITEKAN/DI-HOVER
+    // DAFTAR RAYUAN BERGANTI-GANTI SAAT TOMBOL NGAMBEK DISENTUH
     const rayuanList = [
       "Jangan ngambek lagi dong... Senyum dikit aja, cantiknya langsung nambah 1000%! ✨",
       "Kalau kamu ngambek terus, nanti bintang di langit cemburu sama manisnya muka cemberut kamu 🥺",
@@ -221,15 +223,22 @@
 
     let rayuanIndex = 0;
 
-    // 2. LOGIK TOMBOL KABUR (Bikin pacar gemes gak bisa tekan 'Masih Kesel')
+    // LOGIKA TOMBOL KABUR DENGAN POSITION FIXED AGAR MULUS
     function kaburTombol() {
       const btn = document.getElementById('btnKabur');
       
-      // Ubah posisi tombol secara acak
-      const x = Math.random() * (window.innerWidth - 150) - (window.innerWidth / 2) + 100;
-      const y = Math.random() * (window.innerHeight - 100) - (window.innerHeight / 2) + 50;
+      // Ubah posisi menjadi fixed agar bisa terbang bebas di layar
+      btn.style.position = 'fixed';
+      
+      const padding = 20;
+      const maxX = window.innerWidth - btn.offsetWidth - padding;
+      const maxY = window.innerHeight - btn.offsetHeight - padding;
 
-      btn.style.transform = `translate(${x}px, ${y}px)`;
+      const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+      const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+      btn.style.left = randomX + 'px';
+      btn.style.top = randomY + 'px';
 
       // Ganti teks rayuan secara bergantian
       rayuanIndex = (rayuanIndex + 1) % rayuanList.length;
@@ -245,7 +254,7 @@
       alert("I Love You So Much! ❤️ Cepat bales chat aku ya!");
     }
 
-    // 3. ANIMASI CANVAS PARTIKEL MEMBENTUK HATI SHAPE
+    // ANIMASI CANVAS PARTIKEL HATI
     const canvas = document.getElementById('heartCanvas');
     const ctx = canvas.getContext('2d');
 
@@ -257,7 +266,6 @@
       height = canvas.height = window.innerHeight;
     });
 
-    // Rumus Matematika Bentuk Hati
     function heartPosition(t) {
       const scale = Math.min(width, height) / 45;
       const x = 16 * Math.pow(Math.sin(t), 3);
@@ -282,11 +290,9 @@
       }
 
       update() {
-        // Efek bergerak membentuk bentuk hati
         this.x += (this.targetX - this.x) * this.speed;
         this.y += (this.targetY - this.y) * this.speed;
 
-        // Efek denyut halus
         this.t += 0.005;
         const newTarget = heartPosition(this.t);
         this.targetX = newTarget.x;
