@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jangan Ngambek Lagi Ya Sayang 🥺❤️</title>
+  <title>Jangan Ngambek Lagi Ya Sayanggggg 🥺❤️</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Sacramento&family=Caveat:wght@700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -93,7 +93,7 @@
       font-style: italic;
     }
 
-    /* TOMBOL SEJAJAR KANAN-KIRI */
+    /* TOMBOL SEJAJAR KANAN-KIRI LOKASI STABIL */
     .btn-group {
       display: flex;
       justify-content: space-between;
@@ -101,17 +101,18 @@
       gap: 12px;
       width: 100%;
       min-height: 50px;
+      position: relative;
     }
 
     .btn {
-      flex: 1;
+      width: 48%; /* Dikunci 48% agar tombol kiri tidak melar saat tombol kanan kabur */
       padding: 12px 8px;
       font-size: 0.85rem;
       font-weight: 600;
       border: none;
       border-radius: 20px;
       cursor: pointer;
-      transition: transform 0.2s ease, background 0.3s ease;
+      transition: background 0.3s ease;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
@@ -121,7 +122,7 @@
     }
 
     .btn-maaf:hover {
-      transform: scale(1.05);
+      transform: scale(1.03);
       box-shadow: 0 0 20px #ff4b72;
     }
 
@@ -129,7 +130,7 @@
       background: rgba(255, 255, 255, 0.2);
       color: #eee;
       border: 1px solid rgba(255, 255, 255, 0.3);
-      z-index: 99;
+      touch-action: manipulation;
     }
 
     /* Pop-up Overlay */
@@ -141,7 +142,7 @@
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 10000;
       padding: 20px;
     }
 
@@ -184,7 +185,7 @@
   <!-- Kartu Utama Bujukan -->
   <div class="card" id="mainCard">
     <div class="avatar-wrapper">
-      <!-- ⬇️ GANTI FOTO KAMU / PACAR DI SINI ⬇️ -->
+      <!-- ⬇️ GANTI FOTO PASANGAN DI SINI ⬇️ -->
       <img class="avatar" src="foto-ann.jpeg" alt="Foto Pacar">
       <span class="heart-badge">🥺</span>
     </div>
@@ -192,21 +193,24 @@
     <h1>Maafin Aku Ya Sayang...</h1>
 
     <div class="rayuan-box" id="rayuanText">
-      "Aku tahu aku salah... Tapi tau gak? Dunia aku sepi banget kalau kamu lagi cuek dan ngambek kayak gini 🥺"
+      "Aku tau kamu lagi ga mood,,,tpi klo kmu diem gini jadi sunyi banget sayanggg 🥺"
     </div>
 
     <!-- TOMBOL SEJAJAR KANAN-KIRI -->
     <div class="btn-group">
       <button class="btn btn-maaf" onclick="terimaMaaf()">Udah Ga Ngambek ❤️</button>
-      <button class="btn btn-ngambek" id="btnKabur" onmouseover="kaburTombol()" onclick="kaburTombol()">Masih Kesel! 😤</button>
+      <button class="btn btn-ngambek" id="btnKabur" 
+              onmouseover="kaburTombol()" 
+              ontouchstart="kaburTombolMobile(event)" 
+              onclick="kaburTombolMobile(event)">Emohhh, malass! 😤</button>
     </div>
   </div>
 
   <!-- Pop-Up Penutup Setelah Dimaafkan -->
   <div class="overlay" id="popupSukses">
     <div class="popup-box">
-      <h2>Yeeeay! Makasih Cantik 🥰✨</h2>
-      <p>Janji deh habis ini gak bakal bikin kamu kesel lagi. Makasih ya udah mau maafin aku... Sayang kamu banget! ❤️</p>
+      <h2>Yeeeay! Makasih Cayanggg 🥰</h2>
+      <p>habis ini gak bakal bikin kamu kesel lagi. Makasih ya udah mau maafin aku... Sayang kamu banget! ❤️</p>
       <button class="btn btn-maaf" style="width: 100%;" onclick="selesai()">Kirim Peluk & Cium 🤗💋</button>
     </div>
   </div>
@@ -214,21 +218,30 @@
   <script>
     // DAFTAR RAYUAN BERGANTI-GANTI SAAT TOMBOL NGAMBEK DISENTUH
     const rayuanList = [
-      "Jangan ngambek lagi dong... Senyum dikit aja, cantiknya langsung nambah 1000%! ✨",
-      "Kalau kamu ngambek terus, nanti bintang di langit cemburu sama manisnya muka cemberut kamu 🥺",
-      "Boba paling enak di dunia pun rasanya hambar kalau gak diminum bareng kamu pas lagi senyum 💕",
-      "Aku minta maaf ya cantik... Satu senyuman kamu hari ini bisa nyelamatin mood aku seharian penuh ❤️",
-      "Udah dong ngambeknya... Nanti aku beliin makanan favorit kamu + peluk erat deh! 🤗"
+      "Jangan ngambek lagi dong... Senyum aja cayanggg",
+      "Kalo ngambek mulu, nanti aku isengin siapa cayanggg?? 🥺",
+      "pengen peluk kmu biar ga ngambek tapi gabisa teleport langsung ke samping kamu 🥺",
+      "Aku minta maaf ya cayangkuuuu... Satu senyuman dari ayang jadi moodbooster akuuhhhh ❤️",
+      "Udah dong ngambeknya... Nanti kita vidkol yaa, pas nanti ketemu peluk yang lamaaaaa 🤗"
     ];
 
     let rayuanIndex = 0;
 
-    // LOGIKA TOMBOL KABUR DENGAN POSITION FIXED AGAR MULUS
+    // FUNGSI KHUSUS LAYAR HP (CEGAH GHOST CLICK)
+    function kaburTombolMobile(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      kaburTombol();
+    }
+
+    // LOGIKA TOMBOL KABUR
     function kaburTombol() {
       const btn = document.getElementById('btnKabur');
       
-      // Ubah posisi menjadi fixed agar bisa terbang bebas di layar
       btn.style.position = 'fixed';
+      btn.style.zIndex = '9999'; // Pastikan tombol selalu terbang di paling atas
       
       const padding = 20;
       const maxX = window.innerWidth - btn.offsetWidth - padding;
